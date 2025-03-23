@@ -1849,6 +1849,7 @@ static void h264e_deblock_luma_sse2(uint8_t *pix, int32_t stride, const deblock_
     }
 }
 
+#if H264E_ENABLE_DENOISE
 static void h264e_denoise_run_sse2(unsigned char *frm, unsigned char *frmprev, int w, int h_arg, int stride_frm, int stride_frmprev)
 {
 #define MM_LOAD_8TO16(p) _mm_unpacklo_epi8(_mm_loadl_epi64((__m128i*)(p)), zero)
@@ -2012,6 +2013,7 @@ static void h264e_denoise_run_sse2(unsigned char *frm, unsigned char *frmprev, i
     } while(--h);
     memcpy(frmprev, frm - stride_frm*(h_arg-2), w+2);
 }
+#endif
 
 #define IS_NULL(p) ((p) < (pix_t *)(uintptr_t)32)
 
@@ -4155,6 +4157,7 @@ static void h264e_deblock_luma_neon(uint8_t *pix, int32_t stride, const deblock_
     }
 }
 
+#if H264E_ENABLE_DENOISE
 static void h264e_denoise_run_neon(unsigned char *frm, unsigned char *frmprev, int w, int h_arg, int stride_frm, int stride_frmprev)
 {
     int cloop, h = h_arg;
@@ -4328,6 +4331,7 @@ static void h264e_denoise_run_neon(unsigned char *frm, unsigned char *frmprev, i
     } while(--h);
     memcpy(frmprev, frm - stride_frm*(h_arg - 2), w + 2);
 }
+#endif
 
 #undef IS_NULL
 #define IS_NULL(p) ((p) < (pix_t *)32)
@@ -6081,6 +6085,7 @@ static void h264e_deblock_luma(uint8_t *pix, int32_t stride, const deblock_param
     }
 }
 
+#if H264E_ENABLE_DENOISE
 static void h264e_denoise_run(unsigned char *frm, unsigned char *frmprev, int w, int h_arg, int stride_frm, int stride_frmprev)
 {
     int cloop, h = h_arg;
@@ -6155,6 +6160,7 @@ static void h264e_denoise_run(unsigned char *frm, unsigned char *frmprev, int w,
     } while(--h);
     memcpy(frmprev, frm - stride_frm*(h_arg - 2), w + 2);
 }
+#endif
 
 #undef IS_NULL
 #define IS_NULL(p) ((p) < (pix_t *)32)
